@@ -42,11 +42,11 @@ sub.on("message", (topic, message) => {
   console.log(topic.toString(), message.toString());
   wss.clients.forEach((client) => {
     if (client.mqtt == undefined) return;
-    if (client.mqtt[json.topic])
+    if (client.mqtt[topic.toString()])
       client.send(
         JSON.stringify({
-          topic: json.topic,
-          message: json.message,
+          topic: topic.toString(),
+          message: message.toString(),
         })
       );
   });
