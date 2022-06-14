@@ -16,7 +16,7 @@ wss.on("connection", (ws) => {
     }
     if (json.command == "subscribe") {
       console.log("subscribe");
-      if (topics[json.topic] == undefined) sub.subscribe("dangsan");
+      if (topics[json.topic] == undefined) sub.subscribe(json.topic);
       topics[json.topic] = true;
       if (ws.mqtt == undefined) ws.mqtt = {};
       ws.mqtt[json.topic] = true;
