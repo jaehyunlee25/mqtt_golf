@@ -9,6 +9,7 @@ wss.on("connection", (ws) => {
     try {
       json = JSON.parse(data);
     } catch (e) {
+      console.log(e);
       console.log(data.toString("utf-8"));
       return;
     }
