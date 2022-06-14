@@ -39,7 +39,6 @@ wss.on("connection", (ws) => {
 });
 
 sub.on("message", (topic, message) => {
-  console.log(topic.toString(), message.toString());
   wss.clients.forEach((client) => {
     if (client.mqtt == undefined) return;
     if (client.mqtt[topic.toString()])
