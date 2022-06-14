@@ -13,11 +13,13 @@ wss.on("connection", (ws) => {
       return;
     }
     if (json.command == "subscribe") {
+      console.log("subscribe");
       topics[json.topic] = true;
       if (ws.mqtt == undefined) ws.mqtt = {};
       ws.mqtt[json.topic] = true;
     }
     if (json.command == "publish") {
+      console.log("subscribe");
       wss.clients.forEach((client) => {
         if (client.mqtt == undefined) return;
         if (client.mqtt[json.topic])
