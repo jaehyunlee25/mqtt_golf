@@ -45,8 +45,8 @@ sub.on("message", (topic, message) => {
     if (client.mqtt[topic])
       client.send(
         JSON.stringify({
-          topic: topic,
-          message: message,
+          topic: topic.toString("utf-8"),
+          message: message.toString("utf-8"),
         })
       );
     //setLog(client, topic.toString(), message.toString());
