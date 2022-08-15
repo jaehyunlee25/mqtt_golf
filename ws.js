@@ -42,14 +42,14 @@ wss.on("connection", (ws) => {
 sub.on("message", (topic, message) => {
   wss.clients.forEach((client) => {
     if (client.mqtt == undefined) return;
-    if (client.mqtt[topic.toString()])
+    if (client.mqtt[topic])
       client.send(
         JSON.stringify({
-          topic: topic.toString(),
-          message: message.toString(),
+          topic: topic,
+          message: message,
         })
       );
-    setLog(client, topic.toString(), message.toString());
+    //setLog(client, topic.toString(), message.toString());
   });
 });
 function setLog(client, topic, message) {
