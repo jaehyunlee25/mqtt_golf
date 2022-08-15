@@ -56,12 +56,12 @@ function setLog(client, topic, message) {
   let json;
   try {
     json = JSON.parse(message);
-    console.log(new Date().getTime(), message, json);
     if (
       json.subType == "console" ||
       json.subType == "jsAlert" ||
       json.subType == "jsConfirm"
     ) {
+      console.log(new Date().getTime(), message, json);
       const logParam = {
         type: "command",
         sub_type: json.subType,
@@ -81,6 +81,7 @@ function TZLOG(param, callback) {
   const OUTER_ADDR_HEADER = "https://dev.mnemosyne.co.kr";
   const addr = OUTER_ADDR_HEADER + "/api/reservation/newLog";
   request.post(addr, { json: param }, function (error, response, body) {
+    console.log(new Date().getTime(), error, body);
     if (callback) callback(data);
   });
 }
