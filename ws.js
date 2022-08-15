@@ -56,6 +56,7 @@ function setLog(client, topic, message) {
   let json;
   try {
     json = JSON.parse(message);
+    console.log(new Date().getTime(), message, json);
     if (
       json.subType == "console" ||
       json.subType == "jsAlert" ||
