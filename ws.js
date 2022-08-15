@@ -51,7 +51,7 @@ sub.on("message", (topic, message) => {
           message: strMessage,
         })
       );
-    setLog(client, strTopic, strMessage);
+    //setLog(client, strTopic, strMessage);
   });
 });
 function setLog(client, topic, message) {
