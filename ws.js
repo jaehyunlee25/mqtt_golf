@@ -52,9 +52,9 @@ sub.on("message", (topic, message) => {
         })
       );
   });
-  setLog(client, strTopic, strMessage);
+  setLog(strTopic, strMessage);
 });
-function setLog(client, topic, message) {
+function setLog(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
@@ -70,7 +70,7 @@ function setLog(client, topic, message) {
         device_token: "noToken",
         golf_club_id: "noGolfClubId",
         message,
-        parameter: JSON.stringify({ ip: client._socket.remoteAddress }),
+        parameter: JSON.stringify({}),
       };
       TZLOG(logParam);
     }
