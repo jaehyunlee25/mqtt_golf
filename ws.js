@@ -3,6 +3,7 @@ const { WebSocketServer } = require("ws");
 const wss = new WebSocketServer({ port: 9001 });
 const sub = mqtt.connect("mqtt://dev.mnemosyne.co.kr");
 const topics = {};
+const request = require("request");
 wss.on("connection", (ws) => {
   console.log("conn!!");
   ws.on("message", (data) => {
@@ -48,5 +49,37 @@ sub.on("message", (topic, message) => {
           message: message.toString(),
         })
       );
+    setLog(client, topic.toString(), message.toString());
   });
 });
+function setLog(client, topic, message) {
+  let json;
+  try {
+    json = JSON.parse(message);
+    if (
+      json.subType == "console" ||
+      json.subType == "jsAlert" ||
+      json.subType == "jsConfirm"
+    ) {
+      const logParam = {
+        type: "command",
+        sub_type: json.subType,
+        device_id: json.deviceId,
+        device_token: "",
+        golf_club_id: "",
+        message,
+        parameter: JSON.stringify({ ip: client._socket.remoteAddress }),
+      };
+      TZLOG(logParam);
+    }
+  } catch (e) {
+    return;
+  }
+}
+function TZLOG(param, callback) {
+  const OUTER_ADDR_HEADER = "https://dev.mnemosyne.co.kr";
+  const addr = OUTER_ADDR_HEADER + "/api/reservation/newLog";
+  request.post(addr, { json: param }, function (error, response, body) {
+    if (callback) callback(data);
+  });
+}
