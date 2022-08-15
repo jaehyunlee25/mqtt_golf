@@ -82,7 +82,7 @@ function setLog(topic, message) {
 function TZLOG(param, callback) {
   const OUTER_ADDR_HEADER = "https://dev.mnemosyne.co.kr";
   const addr = OUTER_ADDR_HEADER + "/api/reservation/newLog";
-  console.log(new Date().getTime(), param);
+  // console.log(new Date().getTime(), param);
   request.post(addr, { json: param }, function (error, response, body) {
     console.log(new Date().getTime(), error, body);
     if (callback) callback(data);
