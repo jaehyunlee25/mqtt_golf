@@ -40,10 +40,10 @@ wss.on("connection", (ws) => {
 });
 
 sub.on("message", (topic, message) => {
+  const strTopic = topic.toString("utf-8");
+  const strMessage = message.toString("utf-8");
   wss.clients.forEach((client) => {
     if (client.mqtt == undefined) return;
-    const strTopic = topic.toString("utf-8");
-    const strMessage = message.toString("utf-8");
     if (client.mqtt[strTopic])
       client.send(
         JSON.stringify({
@@ -51,8 +51,8 @@ sub.on("message", (topic, message) => {
           message: strMessage,
         })
       );
-    //setLog(client, strTopic, strMessage);
   });
+  setLog(client, strTopic, strMessage);
 });
 function setLog(client, topic, message) {
   let json;
