@@ -71,6 +71,7 @@ function setLog(topic, message) {
         golf_club_id: "noGolfClubId",
         message,
         parameter: JSON.stringify({}),
+        noPub: true,
       };
       TZLOG(logParam);
     }
