@@ -61,13 +61,12 @@ function setLog(client, topic, message) {
       json.subType == "jsAlert" ||
       json.subType == "jsConfirm"
     ) {
-      console.log(new Date().getTime(), message, json);
       const logParam = {
         type: "command",
         sub_type: json.subType,
         device_id: json.deviceId,
-        device_token: "",
-        golf_club_id: "",
+        device_token: "noToken",
+        golf_club_id: "noGolfClubId",
         message,
         parameter: JSON.stringify({ ip: client._socket.remoteAddress }),
       };
