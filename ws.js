@@ -42,14 +42,16 @@ wss.on("connection", (ws) => {
 sub.on("message", (topic, message) => {
   wss.clients.forEach((client) => {
     if (client.mqtt == undefined) return;
-    if (client.mqtt[topic])
+    const strTopic = topic.toString("utf-8");
+    const strMessage = message.toString("utf-8");
+    if (client.mqtt[strTopic])
       client.send(
         JSON.stringify({
-          topic: topic.toString("utf-8"),
-          message: message.toString("utf-8"),
+          topic: strTopic,
+          message: strMessage,
         })
       );
-    //setLog(client, topic.toString(), message.toString());
+    setLog(client, strTopic, strMessage);
   });
 });
 function setLog(client, topic, message) {
