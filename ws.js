@@ -84,7 +84,7 @@ function TZLOG(param, callback) {
   const addr = OUTER_ADDR_HEADER + "/api/reservation/newLog";
   console.log(new Date().getTime(), param);
   request.post(addr, { json: param }, function (error, response, body) {
-    console.log(new Date().getTime(), error, body);
+    if (error) console.log(new Date().getTime(), error, param);
     if (callback) callback(data);
   });
 }
