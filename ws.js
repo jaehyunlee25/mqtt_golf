@@ -68,7 +68,7 @@ function setLog(topic, message) {
         sub_type: json.subType,
         device_id: json.deviceId,
         device_token: "noToken",
-        golf_club_id: "noGolfClubId",
+        golf_club_id: json.clubId,
         message: message.replace(/\'/g, "\\'"),
         parameter: JSON.stringify({}),
         noPub: true,
