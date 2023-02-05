@@ -6,6 +6,14 @@ const topics = {};
 const request = require("request");
 wss.on("connection", (ws) => {
   console.log("conn!!");
+  ws.on("open", () => {
+    console.log("socket open!");
+    ws.send(Date.now());
+  });
+  ws.on("close", (e) => {
+    console.log("disconnected");
+    console.log(e);
+  });
   ws.on("message", (data) => {
     let json;
     try {
