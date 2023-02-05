@@ -74,13 +74,24 @@ function setLog(topic, message) {
       device_token: "noToken",
       golf_club_id: json.clubId || "",
       message: message.replace(/\'/g, "\\'"),
-      parameter: JSON.parse(json.parameter) || {},
+      parameter: json.parameter || {},
       noPub: true,
     };
     TZLOG(logParam);
   } catch (e) {
     console.log(message);
     console.log(e);
+    const logParam = {
+      type: "command",
+      sub_type: "temp",
+      device_id: json.deviceId || "",
+      device_token: "noToken",
+      golf_club_id: json.clubId || "",
+      message: message.replace(/\'/g, "\\'"),
+      parameter: JSON.parse(json.parameter) || {},
+      noPub: true,
+    };
+    TZLOG(logParam);
     return;
   }
 }
