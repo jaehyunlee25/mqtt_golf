@@ -4,6 +4,9 @@ const wss = new WebSocketServer({ port: 9001 });
 const sub = mqtt.connect("mqtt://dev.mnemosyne.co.kr");
 const topics = {};
 const request = require("request");
+sub.subscribe("TZLOG");
+sub.subscribe("TZ_ANDROID_LOG");
+sub.subscribe("TZ_APPLE_LOG");
 wss.on("connection", (ws) => {
   console.log("conn!!");
   ws.on("open", () => {
@@ -66,7 +69,8 @@ function setLog(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
-    if (!json.parameter) json.parameter = new Date().getTime().toString();
+    if (!json.parameter)
+      json.parameter = { LOGID: new Date().getTime().toString() };
     const logParam = {
       type: "command",
       sub_type: json.subType || "",
@@ -75,6 +79,7 @@ function setLog(topic, message) {
       golf_club_id: json.clubId || "",
       message: message.replace(/\'/g, "\\'"),
       parameter: json.parameter || {},
+      timestamp: json.timestamp || new Date().getTime(),
       noPub: true,
     };
     TZLOG(logParam);
