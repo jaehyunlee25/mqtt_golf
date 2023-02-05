@@ -70,7 +70,9 @@ function setLog(topic, message) {
   try {
     json = JSON.parse(message);
     if (!json.parameter)
-      json.parameter = { LOGID: new Date().getTime().toString() };
+      json.parameter = JSON.stringify({
+        LOGID: new Date().getTime().toString(),
+      });
     const logParam = {
       type: "command",
       sub_type: json.subType || "",
