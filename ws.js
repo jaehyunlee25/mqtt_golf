@@ -88,6 +88,7 @@ function setLog(topic, message) {
       timestamp: json.timestamp,
       noPub: true,
     };
+    console.log(logParam);
     TZLOG(logParam);
   } catch (e) {
     console.log(message);
