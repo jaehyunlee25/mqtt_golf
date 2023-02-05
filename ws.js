@@ -73,7 +73,7 @@ function setLog(topic, message) {
       device_token: "noToken",
       golf_club_id: json.clubId || "",
       message: message.replace(/\'/g, "\\'"),
-      parameter: json.parameter || JSON.stringify({}),
+      parameter: JSON.parse(json.parameter) || {},
       noPub: true,
     };
     TZLOG(logParam);
