@@ -4,9 +4,9 @@ const wss = new WebSocketServer({ port: 9001 });
 const sub = mqtt.connect("mqtt://dev.mnemosyne.co.kr");
 const topics = {};
 const request = require("request");
-sub.subscribe("TZLOG");
+/* sub.subscribe("TZLOG");
 sub.subscribe("TZ_ANDROID_LOG");
-sub.subscribe("TZ_APPLE_LOG");
+sub.subscribe("TZ_APPLE_LOG"); */
 wss.on("connection", (ws) => {
   console.log("conn!!");
   ws.on("open", () => {
