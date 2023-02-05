@@ -73,6 +73,7 @@ function setLog(topic, message) {
       json.parameter = JSON.stringify({
         LOGID: new Date().getTime().toString(),
       });
+    if (!json.timestamp) json.timestamp = new Date().getTime();
     const logParam = {
       type: "command",
       sub_type: json.subType || "",
@@ -81,7 +82,7 @@ function setLog(topic, message) {
       golf_club_id: json.clubId || "",
       message: message.replace(/\'/g, "\\'"),
       parameter: json.parameter || {},
-      timestamp: json.timestamp || new Date().getTime(),
+      timestamp: json.timestamp,
       noPub: true,
     };
     TZLOG(logParam);
