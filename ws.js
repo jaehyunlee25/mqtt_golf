@@ -79,6 +79,7 @@ function setLog(topic, message) {
     };
     TZLOG(logParam);
   } catch (e) {
+    console.log(message);
     console.log(e);
     return;
   }
