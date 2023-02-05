@@ -66,7 +66,7 @@ function setLog(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
-    console.log(json.parameter, typeof json.parameter);
+    if (!json.parameter) json.parameter = new Date().getTime().toString();
     const logParam = {
       type: "command",
       sub_type: json.subType || "",
