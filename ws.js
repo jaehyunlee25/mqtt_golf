@@ -74,6 +74,9 @@ function setLog(topic, message) {
         LOGID: new Date().getTime().toString(),
       });
     if (!json.timestamp) json.timestamp = new Date().getTime();
+    if (json.timestamp == "undefined") json.timestamp = new Date().getTime();
+    if (typeof json.timestamp == "string")
+      json.timestamp = new Date().getTime();
     const logParam = {
       type: "command",
       sub_type: json.subType || "",
