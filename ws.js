@@ -66,23 +66,17 @@ function setLog(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
-    if (
-      json.subType == "console" ||
-      json.subType == "jsAlert" ||
-      json.subType == "jsConfirm"
-    ) {
-      const logParam = {
-        type: "command",
-        sub_type: json.subType,
-        device_id: json.deviceId,
-        device_token: "noToken",
-        golf_club_id: json.clubId,
-        message: message.replace(/\'/g, "\\'"),
-        parameter: JSON.stringify({}),
-        noPub: true,
-      };
-      TZLOG(logParam);
-    }
+    const logParam = {
+      type: "command",
+      sub_type: json.subType || "",
+      device_id: json.deviceId || "",
+      device_token: "noToken",
+      golf_club_id: json.clubId || "",
+      message: message.replace(/\'/g, "\\'"),
+      parameter: json.parameter || JSON.stringify({}),
+      noPub: true,
+    };
+    TZLOG(logParam);
   } catch (e) {
     return;
   }
