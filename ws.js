@@ -19,7 +19,23 @@ function slackresponse(err, resp) {
   if (err) console.log(err);
   else console.log(resp);
 }
-slack.api("chat.postMessage", slackparam, slackresponse);
+
+request(
+  {
+    url: "https://slack.com/api/chat.postMessage",
+    method: "POST",
+    headers: { Authorization: "Bearer " + slacktoken },
+    body: {
+      channel: "#app_result",
+      text: "app_result_test",
+    },
+  },
+  function (error, response, body) {
+    if (error) console.log(error);
+    else console.log(body);
+  }
+);
+// slack.api("chat.postMessage", slackparam, slackresponse);
 
 sub.subscribe("TZLOG");
 sub.subscribe("TZ_ANDROID_LOG");
