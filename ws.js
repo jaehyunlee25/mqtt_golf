@@ -96,10 +96,11 @@ function mqttonmessage(topic, message) {
   setLog(strTopic, strMessage);
 }
 function procMsg(topic, message) {
-  console.log(topic);
+  if (topic == "TZLOG") return;
   let json;
   try {
     json = JSON.parse(message);
+    console.log(topic);
     if (json.message.indexOf("app_result") != -1) proAppResult(json.message);
   } catch (e) {
     console.log(message);
