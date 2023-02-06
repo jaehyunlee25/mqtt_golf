@@ -99,6 +99,7 @@ function mqttonmessage(topic, message) {
 }
 function procMsg(topic, message) {
   if (topic != "TZ_MACRO_LOG") return;
+  console.log(topic);
   let json;
   try {
     json = JSON.parse(message);
