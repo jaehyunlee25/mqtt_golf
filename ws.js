@@ -29,6 +29,7 @@ request(
       channel: "#app_result",
       text: "app_result_test",
     },
+    json: true,
   },
   function (error, response, body) {
     if (error) console.log(error);
