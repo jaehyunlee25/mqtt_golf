@@ -7,6 +7,7 @@ const request = require("request");
 sub.subscribe("TZLOG");
 sub.subscribe("TZ_ANDROID_LOG");
 sub.subscribe("TZ_APPLE_LOG");
+sub.on("message", mqttonmessage);
 wss.on("connection", (ws) => {
   console.log("conn!!");
   ws.on("open", () => {
@@ -17,40 +18,42 @@ wss.on("connection", (ws) => {
     console.log("disconnected");
     console.log(e);
   });
-  ws.on("message", (data) => {
-    let json;
-    try {
-      json = JSON.parse(data);
-    } catch (e) {
-      console.log(e);
-      console.log(data.toString("utf-8"));
-      return;
-    }
-    if (json.command == "subscribe") {
-      console.log("subscribe");
-      if (topics[json.topic] == undefined) sub.subscribe(json.topic);
-      topics[json.topic] = true;
-      if (ws.mqtt == undefined) ws.mqtt = {};
-      ws.mqtt[json.topic] = true;
-    }
-    if (json.command == "publish") {
-      console.log("publish");
-      wss.clients.forEach((client) => {
-        if (client.mqtt == undefined) return;
-        if (client.mqtt[json.topic])
-          client.send(
-            JSON.stringify({
-              topic: json.topic,
-              message: json.message,
-            })
-          );
-      });
-      sub.publish(json.topic, json.message, { qos: 0 });
-    }
-  });
+  ws.on("message", onmessage);
 });
-
-sub.on("message", (topic, message) => {
+function onmessage(data) {
+  let json;
+  try {
+    json = JSON.parse(data);
+  } catch (e) {
+    console.log(e);
+    console.log(data.toString("utf-8"));
+    return;
+  }
+  if (json.command == "subscribe") wssub(json);
+  if (json.command == "publish") wspub(json);
+}
+function wspub(json) {
+  console.log("publish");
+  wss.clients.forEach((client) => {
+    if (client.mqtt == undefined) return;
+    if (client.mqtt[json.topic])
+      client.send(
+        JSON.stringify({
+          topic: json.topic,
+          message: json.message,
+        })
+      );
+  });
+  sub.publish(json.topic, json.message, { qos: 0 });
+}
+function wssub(json) {
+  console.log("subscribe");
+  if (topics[json.topic] == undefined) sub.subscribe(json.topic);
+  topics[json.topic] = true;
+  if (ws.mqtt == undefined) ws.mqtt = {};
+  ws.mqtt[json.topic] = true;
+}
+function mqttonmessage(topic, message) {
   const strTopic = topic.toString("utf-8");
   const strMessage = message.toString("utf-8");
   wss.clients.forEach((client) => {
@@ -63,8 +66,20 @@ sub.on("message", (topic, message) => {
         })
       );
   });
+  procMsg(strTopic, strMessage);
   setLog(strTopic, strMessage);
-});
+}
+function procMsg(topic, message) {
+  let json;
+  try {
+    json = JSON.parse(message);
+    if (json.message.indexOf("app_result")) console.log(json.message);
+  } catch (e) {
+    console.log(message);
+    console.log(e);
+    return;
+  }
+}
 function setLog(topic, message) {
   let json;
   try {
