@@ -100,7 +100,7 @@ function procMsg(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
-    console.log(topic);
+    console.log(json);
     if (json.message.indexOf("app_result") != -1) proAppResult(json.message);
   } catch (e) {
     console.log(message);
