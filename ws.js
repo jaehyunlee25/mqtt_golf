@@ -109,7 +109,9 @@ function proAppResult(msg) {
     sendslackmessage(msg);
     console.dir(jsonMsg);
   } catch (e) {
-    console.log(msg);
+    const [, , str] = msg.split(":");
+    const { command } = JSON.parse(str);
+    sendslackmessage(command);
   }
 }
 function setLog(topic, message) {
