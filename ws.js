@@ -1,4 +1,6 @@
 const mqtt = require("mqtt");
+const nodemailer = require("nodemailer");
+// const smtpTransport = require("nodemailer-smtp-transport");
 const { WebSocketServer } = require("ws");
 const wss = new WebSocketServer({ port: 9001 });
 const sub = mqtt.connect("mqtt://dev.mnemosyne.co.kr");
@@ -110,25 +112,57 @@ function procMsg(topic, message) {
 function proAppResult(json) {
   try {
     const jsonMsg = JSON.parse(json.message);
-    const { app_result } = jsonMsg;
-    const { deviceId, clubId } = json;
-    const { device, type, result } = app_result;
-    sendslackmessage(
-      [
-        "데이터 조회 결과입니다.",
-        "디바이스: \t" + deviceId,
-        "클럽번호: \t" + clubId,
-        "기기종류: \t" + device,
-        "검색종류: \t" + type,
-        "검색결과: \t" + result,
-      ].join("\n")
-    );
+    sendMessage(json, jsonMsg);
   } catch (e) {
     const [a, result] = msg.split(":");
     const [device, , type] = a.split(" ");
     // if (msg.indexOf("normal") != -1) return;
     sendslackmessage([device, type, result.trim()].join("/"));
   }
+}
+function sendMessage(json, jsonMsg) {
+  const { app_result } = jsonMsg;
+  const { deviceId, clubId } = json;
+  const { device, type, result } = app_result;
+  const str = [
+    "< 데이터 조회 결과입니다. >",
+    "디바이스: \t" + deviceId,
+    "클럽번호: \t" + clubId,
+    "기기종류: \t" + device,
+    "검색종류: \t" + type,
+    "검색결과: \t" + result,
+  ].join("\n");
+  const html = [
+    "<h3> 데이터 조회 결과입니다. </h3>",
+    "<table>",
+    "<tr><td>디바이스</td><td>" + deviceId + "</td></tr>",
+    "<tr><td>클럽번호</td><td>" + clubId + "</td></tr>",
+    "<tr><td>기기종류</td><td>" + device + "</td></tr>",
+    "<tr><td>검색종류</td><td>" + type + "</td></tr>",
+    "<tr><td>검색결과</td><td>" + result + "</td></tr>",
+    "</table>",
+  ].join("<br>");
+  sendslackmessage(str);
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "tzzim.cs@gmail.com",
+      pass: "zuilsgtrsbcqeose",
+    },
+  });
+  const mailOptions = {
+    from: "니마시니솔루션스<tzzim.cs@gmail.com>",
+    to: "이재현<jaehyunlee25@daum.net>",
+    subject: "데이터 조회 결과입니다.",
+    html,
+    //text:"test",
+    /* attachments:[
+            {
+                    filename:"test.csv",
+                    path:"emails.txt"
+            }
+    ] */
+  };
 }
 function setLog(topic, message) {
   let json;
