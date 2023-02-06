@@ -106,7 +106,8 @@ function procMsg(topic, message) {
 function proAppResult(msg) {
   try {
     const jsonMsg = JSON.parse(msg);
-    sendslackmessage(jsonMsg.command);
+    console.log(jsonMsg.app_result);
+    // sendslackmessage();
   } catch (e) {
     if (msg.indexOf("normal") != -1) return;
     sendslackmessage(command);
