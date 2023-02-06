@@ -121,6 +121,10 @@ function proAppResult(json) {
   }
 }
 function sendMessage(json, jsonMsg) {
+  sendSlackMessage(json, jsonMsg);
+  sendEmail(json, jsonMsg);
+}
+function sendSlackMessage(json, jsonMsg) {
   const { app_result } = jsonMsg;
   const { deviceId, clubId } = json;
   const { device, type, result } = app_result;
@@ -132,41 +136,56 @@ function sendMessage(json, jsonMsg) {
     "검색종류: \t" + type,
     "검색결과: \t" + result,
   ].join("\n");
+  sendslackmessage(str);
+}
+function sendEmail(json, jsonMsg) {
+  const { app_result } = jsonMsg;
+  const { deviceId, clubId } = json;
+  const { device, type, result } = app_result;
   const html = [
     "<h3> 데이터 조회 결과입니다. </h3>",
     "<table>",
-    "<tr><td>디바이스: </td><td>" + deviceId + "</td></tr>",
-    "<tr><td>클럽번호: </td><td>" + clubId + "</td></tr>",
-    "<tr><td>기기종류: </td><td>" + device + "</td></tr>",
-    "<tr><td>검색종류: </td><td>" + type + "</td></tr>",
-    "<tr><td>검색결과: </td><td>" + result + "</td></tr>",
+    "<tr><td><b>디바이스: </b></td><td>" + deviceId + "</td></tr>",
+    "<tr><td><b>클럽번호: </b></td><td>" + clubId + "</td></tr>",
+    "<tr><td><b>기기종류: </b></td><td>" + device + "</td></tr>",
+    "<tr><td><b>검색종류: </b></td><td>" + type + "</td></tr>",
+    "<tr><td><b>검색결과: </b></td><td>" + result + "</td></tr>",
     "</table>",
   ].join("<br>");
-  sendslackmessage(str);
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "tzzim.cs@gmail.com",
-      pass: "zuilsgtrsbcqeose",
-    },
-  });
-  const mailOptions = {
-    from: "니마시니솔루션스<tzzim.cs@gmail.com>",
-    to: "이재현<jaehyunlee25@daum.net>",
-    subject: "데이터 조회 결과입니다.",
-    html,
-    //text:"test",
-    /* attachments:[
-            {
-                    filename:"test.csv",
-                    path:"emails.txt"
-            }
-    ] */
-  };
-  transporter.sendMail(mailOptions, (err, data) => {
-    if (err) console.log(err);
-    else console.log("Email sent: " + data.response);
-  });
+
+  const mails = fs.readFileSync("email").toString("utf-8").split("\r\n");
+
+  function exec() {
+    const [mailname, mailaddress] = mails.pop().split("\t");
+    if (!mailaddress) {
+      return;
+    }
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "tzzim.cs@gmail.com",
+        pass: "zuilsgtrsbcqeose",
+      },
+    });
+    const mailOptions = {
+      from: "티찜관리자<tzzim.cs@gmail.com>",
+      to: mailname + "<" + mailaddress + ">",
+      subject: "데이터 조회 결과입니다.",
+      html,
+      //text:"test",
+      /* attachments:[
+        {
+          filename:"test.csv",
+          path:"emails.txt"
+        }
+      ] */
+    };
+    transporter.sendMail(mailOptions, (err, data) => {
+      if (err) console.log(err);
+      else console.log("Email sent: " + data.response);
+      exec();
+    });
+  }
 }
 function setLog(topic, message) {
   let json;
