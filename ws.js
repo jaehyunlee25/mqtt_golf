@@ -154,6 +154,7 @@ function sendEmail(json, jsonMsg) {
   ].join("<br>");
 
   const mails = fs.readFileSync("email").toString("utf-8").split("\r\n");
+  exec();
 
   function exec() {
     const [mailname, mailaddress] = mails.pop().split("\t");
