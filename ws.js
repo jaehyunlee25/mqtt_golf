@@ -100,18 +100,20 @@ function procMsg(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
-    if (json.message.indexOf("app_result") != -1) proAppResult(json.message);
+    if (json.message.indexOf("app_result") != -1) proAppResult(json);
   } catch (e) {
     console.log(message);
     console.log(e);
     return;
   }
 }
-function proAppResult(msg) {
+function proAppResult(json) {
   try {
-    const jsonMsg = JSON.parse(msg);
-    console.log(jsonMsg);
-    // sendslackmessage();
+    const jsonMsg = JSON.parse(json.message);
+    const { app_result } = jsonMsg;
+    const { deviceId, clubId } = json;
+    const { device, type, result } = app_result;
+    sendslackmessage([deviceId, clubId, device, type, result].join("/"));
   } catch (e) {
     const [a, result] = msg.split(":");
     const [device, , type] = a.split(" ");
