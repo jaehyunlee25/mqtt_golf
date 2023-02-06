@@ -109,7 +109,7 @@ function proAppResult(msg) {
     sendslackmessage(msg);
     console.dir(jsonMsg);
   } catch (e) {
-    console.log(e);
+    console.log(msg);
   }
 }
 function setLog(topic, message) {
