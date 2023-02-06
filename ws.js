@@ -157,6 +157,7 @@ function sendEmail(json, jsonMsg) {
 
   function exec() {
     const [mailname, mailaddress] = mails.pop().split("\t");
+    console.log(mailname, mailaddress);
     if (!mailaddress) {
       return;
     }
