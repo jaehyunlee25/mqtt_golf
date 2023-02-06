@@ -110,7 +110,7 @@ function procMsg(topic, message) {
 function proAppResult(msg) {
   try {
     const jsonMsg = JSON.parse(msg);
-    console.log(msg);
+    console.log(jsonMsg);
     // sendslackmessage();
   } catch (e) {
     const [a, result] = msg.split(":");
