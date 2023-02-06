@@ -116,11 +116,11 @@ function proAppResult(json) {
     sendslackmessage(
       [
         "데이터 조회 결과입니다.",
-        "deviceId: \t" + deviceId,
-        "clubId: \t" + clubId,
-        "device: \t" + device,
-        "type: \t" + type,
-        "result: \t" + result,
+        "디바이스: \t" + deviceId,
+        "클럽번호: \t" + clubId,
+        "기기종류: \t" + device,
+        "검색종류: \t" + type,
+        "검색결과: \t" + result,
       ].join("\n")
     );
   } catch (e) {
