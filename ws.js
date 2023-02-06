@@ -116,7 +116,7 @@ function proAppResult(msg) {
     const [a, result] = msg.split(":");
     const [device, , type] = a.split(" ");
     // if (msg.indexOf("normal") != -1) return;
-    sendslackmessage([device, type, result].join("/"));
+    sendslackmessage([device, type, result.trim()].join("/"));
   }
 }
 function setLog(topic, message) {
