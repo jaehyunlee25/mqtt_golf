@@ -5,6 +5,7 @@ const wss = new WebSocketServer({ port: 9001 });
 const sub = mqtt.connect("mqtt://dev.mnemosyne.co.kr");
 const topics = {};
 const request = require("request");
+const fs = require("fs");
 
 const slacktoken = fs.readFileSync("slacktoken");
 console.log(slacktoken);
