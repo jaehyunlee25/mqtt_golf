@@ -115,11 +115,12 @@ function proAppResult(json) {
     const { device, type, result } = app_result;
     sendslackmessage(
       [
-        "deviceId: " + deviceId,
-        "clubId: " + clubId,
-        "device: " + device,
-        "type: " + type,
-        "result: " + result,
+        "데이터 조회 결과입니다.",
+        "deviceId: \t" + deviceId,
+        "clubId: \t" + clubId,
+        "device: \t" + device,
+        "type: \t" + type,
+        "result: \t" + result,
       ].join("\n")
     );
   } catch (e) {
