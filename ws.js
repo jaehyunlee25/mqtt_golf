@@ -135,11 +135,11 @@ function sendMessage(json, jsonMsg) {
   const html = [
     "<h3> 데이터 조회 결과입니다. </h3>",
     "<table>",
-    "<tr><td>디바이스</td><td>" + deviceId + "</td></tr>",
-    "<tr><td>클럽번호</td><td>" + clubId + "</td></tr>",
-    "<tr><td>기기종류</td><td>" + device + "</td></tr>",
-    "<tr><td>검색종류</td><td>" + type + "</td></tr>",
-    "<tr><td>검색결과</td><td>" + result + "</td></tr>",
+    "<tr><td>디바이스: </td><td>" + deviceId + "</td></tr>",
+    "<tr><td>클럽번호: </td><td>" + clubId + "</td></tr>",
+    "<tr><td>기기종류: </td><td>" + device + "</td></tr>",
+    "<tr><td>검색종류: </td><td>" + type + "</td></tr>",
+    "<tr><td>검색결과: </td><td>" + result + "</td></tr>",
     "</table>",
   ].join("<br>");
   sendslackmessage(str);
