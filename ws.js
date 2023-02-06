@@ -23,12 +23,10 @@ wss.on("connection", (ws) => {
   });
 });
 
-setTimeout(() => {
-  sub.subscribe("TZLOG");
-  sub.subscribe("TZ_ANDROID_LOG");
-  sub.subscribe("TZ_APPLE_LOG");
-  sub.on("message", mqttonmessage);
-}, 1000);
+sub.subscribe("TZLOG");
+sub.subscribe("TZ_ANDROID_LOG");
+sub.subscribe("TZ_APPLE_LOG");
+sub.on("message", mqttonmessage);
 
 function sendslackmessage(message) {
   request(
@@ -82,6 +80,7 @@ function wssub(ws, json) {
   ws.mqtt[json.topic] = true;
 }
 function mqttonmessage(topic, message) {
+  console.log(topic);
   const strTopic = topic.toString("utf-8");
   const strMessage = message.toString("utf-8");
   wss.clients.forEach((client) => {
