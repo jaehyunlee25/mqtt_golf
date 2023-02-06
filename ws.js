@@ -7,6 +7,7 @@ const topics = {};
 const request = require("request");
 
 const slacktoken = fs.readFileSync("slacktoken");
+console.log(slacktoken);
 const slack = new Slack(slacktoken);
 const slackparam = {
   text: "message test",
