@@ -7,7 +7,7 @@ const topics = {};
 const request = require("request");
 
 const slack = new Slack(
-  "xoxb-2897303939495-4756070897924-JBKPxV2ZjyzVvbRf7e8HbzvA"
+  "xoxb-2897303939495-4756070897924-s4pIyg1S58dj9uqYwR0rOtZo"
 );
 const slackparam = {
   text: "message test",
