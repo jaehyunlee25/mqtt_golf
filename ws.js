@@ -18,7 +18,9 @@ wss.on("connection", (ws) => {
     console.log("disconnected");
     console.log(e);
   });
-  ws.on("message", onmessage);
+  ws.on("message", (data) => {
+    onmessage(ws, data);
+  });
 });
 
 setTimeout(() => {
@@ -46,7 +48,7 @@ function sendslackmessage(message) {
     }
   );
 }
-function onmessage(data) {
+function onmessage(ws, data) {
   let json;
   try {
     json = JSON.parse(data);
@@ -55,10 +57,10 @@ function onmessage(data) {
     console.log(data.toString("utf-8"));
     return;
   }
-  if (json.command == "subscribe") wssub(json);
-  if (json.command == "publish") wspub(json);
+  if (json.command == "subscribe") wssub(ws, json);
+  if (json.command == "publish") wspub(ws, json);
 }
-function wspub(json) {
+function wspub(ws, json) {
   console.log("publish");
   wss.clients.forEach((client) => {
     if (client.mqtt == undefined) return;
@@ -72,7 +74,7 @@ function wspub(json) {
   });
   sub.publish(json.topic, json.message, { qos: 0 });
 }
-function wssub(json) {
+function wssub(ws, json) {
   console.log("subscribe");
   if (topics[json.topic] == undefined) sub.subscribe(json.topic);
   topics[json.topic] = true;
