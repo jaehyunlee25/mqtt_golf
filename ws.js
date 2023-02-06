@@ -1,9 +1,25 @@
+const Slack = require("slack-node");
 const mqtt = require("mqtt");
 const { WebSocketServer } = require("ws");
 const wss = new WebSocketServer({ port: 9001 });
 const sub = mqtt.connect("mqtt://dev.mnemosyne.co.kr");
 const topics = {};
 const request = require("request");
+
+const slack = new Slack(
+  "xoxb-2897303939495-4756070897924-al8mN10FjsZI1FiDh6D9dlrm"
+);
+const slackparam = {
+  text: "message test",
+  channel: "#app_result",
+  icon_emoji: "slack",
+};
+function slackresponse(err, resp) {
+  if (err) console.log(err);
+  else console.log(resp);
+}
+slack.api("chat.postMessage", slackparam, slackresponse);
+
 sub.subscribe("TZLOG");
 sub.subscribe("TZ_ANDROID_LOG");
 sub.subscribe("TZ_APPLE_LOG");
@@ -73,12 +89,18 @@ function procMsg(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
-    if (json.message.indexOf("app_result") != -1) console.log(json.message);
+    if (json.message.indexOf("app_result") != -1) proAppResult(json.message);
   } catch (e) {
     console.log(message);
     console.log(e);
     return;
   }
+}
+function proAppResult(msg) {
+  try {
+    const jsonMsg = JSON.parse(msg);
+    console.dir(jsonMsg);
+  } catch (e) {}
 }
 function setLog(topic, message) {
   let json;
