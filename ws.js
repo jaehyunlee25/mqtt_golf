@@ -8,10 +8,6 @@ const fs = require("fs");
 
 const slacktoken = fs.readFileSync("slacktoken").toString("utf-8").trim();
 
-sub.subscribe("TZLOG");
-sub.subscribe("TZ_ANDROID_LOG");
-sub.subscribe("TZ_APPLE_LOG");
-sub.on("message", mqttonmessage);
 wss.on("connection", (ws) => {
   console.log("conn!!");
   ws.on("open", () => {
@@ -24,6 +20,13 @@ wss.on("connection", (ws) => {
   });
   ws.on("message", onmessage);
 });
+
+setTimeout(() => {
+  sub.subscribe("TZLOG");
+  sub.subscribe("TZ_ANDROID_LOG");
+  sub.subscribe("TZ_APPLE_LOG");
+  sub.on("message", mqttonmessage);
+}, 1000);
 
 function sendslackmessage(message) {
   request(
