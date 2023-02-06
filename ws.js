@@ -20,6 +20,16 @@ function slackresponse(err, resp) {
   else console.log(resp);
 }
 
+console.log({
+  url: "https://slack.com/api/chat.postMessage",
+  method: "POST",
+  headers: { Authorization: "Bearer " + slacktoken },
+  body: {
+    channel: "#app_result",
+    text: "app_result_test",
+  },
+  json: true,
+});
 request(
   {
     url: "https://slack.com/api/chat.postMessage",
