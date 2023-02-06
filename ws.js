@@ -1,4 +1,3 @@
-const Slack = require("slack-node");
 const mqtt = require("mqtt");
 const { WebSocketServer } = require("ws");
 const wss = new WebSocketServer({ port: 9001 });
@@ -8,45 +7,6 @@ const request = require("request");
 const fs = require("fs");
 
 const slacktoken = fs.readFileSync("slacktoken").toString("utf-8").trim();
-console.log(slacktoken);
-const slack = new Slack(slacktoken);
-const slackparam = {
-  text: "message test",
-  channel: "#app_result",
-  icon_emoji: "slack",
-};
-function slackresponse(err, resp) {
-  if (err) console.log(err);
-  else console.log(resp);
-}
-
-/* console.log({
-  url: "https://slack.com/api/chat.postMessage",
-  method: "POST",
-  headers: { Authorization: "Bearer " + slacktoken },
-  body: {
-    channel: "#app_result",
-    text: "app_result_test",
-  },
-  json: true,
-});
-request(
-  {
-    url: "https://slack.com/api/chat.postMessage",
-    method: "POST",
-    headers: { Authorization: "Bearer " + slacktoken },
-    body: {
-      channel: "#app_result",
-      text: "app_result_test",
-    },
-    json: true,
-  },
-  function (error, response, body) {
-    if (error) console.log(error);
-    else console.log(body);
-  }
-); */
-slack.api("chat.postMessage", slackparam, slackresponse);
 
 sub.subscribe("TZLOG");
 sub.subscribe("TZ_ANDROID_LOG");
@@ -64,6 +24,25 @@ wss.on("connection", (ws) => {
   });
   ws.on("message", onmessage);
 });
+
+function sendslackmessage(message) {
+  request(
+    {
+      url: "https://slack.com/api/chat.postMessage",
+      method: "POST",
+      headers: { Authorization: "Bearer " + slacktoken },
+      body: {
+        channel: "#app_result",
+        text: message,
+      },
+      json: true,
+    },
+    function (error, response, body) {
+      if (error) console.log(error);
+      else console.log(body);
+    }
+  );
+}
 function onmessage(data) {
   let json;
   try {
@@ -125,10 +104,13 @@ function procMsg(topic, message) {
   }
 }
 function proAppResult(msg) {
+  sendslackmessage(msg);
   try {
     const jsonMsg = JSON.parse(msg);
     console.dir(jsonMsg);
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 function setLog(topic, message) {
   let json;
