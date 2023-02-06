@@ -164,8 +164,8 @@ function sendMessage(json, jsonMsg) {
     ] */
   };
   transporter.sendMail(mailOptions, (err, data) => {
-    if (err) log(err);
-    else log("Email sent: " + data.response);
+    if (err) console.log(err);
+    else console.log("Email sent: " + data.response);
   });
 }
 function setLog(topic, message) {
