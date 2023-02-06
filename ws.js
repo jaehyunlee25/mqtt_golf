@@ -43,8 +43,8 @@ function sendslackmessage(message) {
       json: true,
     },
     function (error, response, body) {
-      if (error) console.log(error);
-      else console.log(body);
+      /* if (error) console.log(error);
+      else console.log(body); */
     }
   );
 }
@@ -154,7 +154,9 @@ function sendEmail(json, jsonMsg) {
   ].join("<br>");
 
   const mails = fs.readFileSync("email").toString("utf-8").split("\r\n");
-  exec();
+  console.log(mails);
+
+  //exec();
 
   function exec() {
     const [mailname, mailaddress] = mails.pop().split("\t");
