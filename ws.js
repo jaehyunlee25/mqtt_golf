@@ -106,11 +106,9 @@ function procMsg(topic, message) {
 function proAppResult(msg) {
   try {
     const jsonMsg = JSON.parse(msg);
-    sendslackmessage(msg);
-    console.dir(jsonMsg);
+    sendslackmessage(jsonMsg.command);
   } catch (e) {
-    const [, , str] = msg.split(":");
-    const { command } = JSON.parse(str);
+    if (msg.indexOf("normal") != -1) return;
     sendslackmessage(command);
   }
 }
