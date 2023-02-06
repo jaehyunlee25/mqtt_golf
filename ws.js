@@ -113,7 +113,15 @@ function proAppResult(json) {
     const { app_result } = jsonMsg;
     const { deviceId, clubId } = json;
     const { device, type, result } = app_result;
-    sendslackmessage([deviceId, clubId, device, type, result].join("/"));
+    sendslackmessage(
+      [
+        "deviceId: " + deviceId,
+        "clubId: " + clubId,
+        "device: " + device,
+        "type: " + type,
+        "result: " + result,
+      ].join("\n")
+    );
   } catch (e) {
     const [a, result] = msg.split(":");
     const [device, , type] = a.split(" ");
