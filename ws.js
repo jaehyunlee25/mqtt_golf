@@ -80,7 +80,6 @@ function wssub(ws, json) {
   ws.mqtt[json.topic] = true;
 }
 function mqttonmessage(topic, message) {
-  console.log(topic);
   const strTopic = topic.toString("utf-8");
   const strMessage = message.toString("utf-8");
   wss.clients.forEach((client) => {
@@ -97,6 +96,7 @@ function mqttonmessage(topic, message) {
   setLog(strTopic, strMessage);
 }
 function procMsg(topic, message) {
+  console.log(topic);
   let json;
   try {
     json = JSON.parse(message);
