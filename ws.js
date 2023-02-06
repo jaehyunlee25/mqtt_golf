@@ -163,6 +163,10 @@ function sendMessage(json, jsonMsg) {
             }
     ] */
   };
+  transporter.sendMail(mailOptions, (err, data) => {
+    if (err) log(err);
+    else log("Email sent: " + data.response);
+  });
 }
 function setLog(topic, message) {
   let json;
