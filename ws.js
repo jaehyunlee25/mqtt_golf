@@ -113,10 +113,10 @@ function proAppResult(msg) {
     console.log(msg);
     // sendslackmessage();
   } catch (e) {
-    const [a, b] = msg.split(":");
-    console.log(a, b);
-    if (msg.indexOf("normal") != -1) return;
-    sendslackmessage(command);
+    const [a, result] = msg.split(":");
+    const [device, , type] = a.split(" ");
+    // if (msg.indexOf("normal") != -1) return;
+    sendslackmessage([device, type, result].join("/"));
   }
 }
 function setLog(topic, message) {
