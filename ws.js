@@ -48,13 +48,6 @@ String.prototype.query = function (callback) {
   }
 };
 
-const param = {
-  golf_club_id: "1f32a4a4-f111-11ec-a93e-0242ac11000a",
-};
-"sql/getclub.sql".gfdp(param).query((err, rows, fields) => {
-  console.log(rows);
-});
-
 const slacktoken = fs.readFileSync("slacktoken").toString("utf-8").trim();
 
 wss.on("connection", (ws) => {
@@ -173,8 +166,12 @@ function sendMessage(json, jsonMsg) {
   const { app_result } = jsonMsg;
   const { deviceId, clubId } = json;
   const { device, type, result } = app_result;
-  sendSlackMessage(deviceId, clubId, device, type, result);
-  sendEmail(deviceId, clubId, device, type, result);
+
+  "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
+    const clubname = [club.name, "(", clubId, ")"].join("");
+    sendSlackMessage(club.name + deviceId, clubname, device, type, result);
+    sendEmail(club.name + deviceId, clubname, device, type, result);
+  });
 }
 function sendSlackMessage(deviceId, clubId, device, type, result) {
   if (result == "normal") {
