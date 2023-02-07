@@ -28,6 +28,7 @@ wss.on("connection", (ws) => {
 sub.subscribe("TZLOG");
 sub.subscribe("TZ_ANDROID_LOG");
 sub.subscribe("TZ_APPLE_LOG");
+sub.subscribe("TZ_MACRO_LOG");
 sub.on("message", mqttonmessage);
 
 function sendslackmessage(message) {
