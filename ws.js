@@ -19,7 +19,7 @@ String.prototype.dp = function (param) {
   return self;
 };
 String.prototype.gfdp = function (param) {
-  log(this.toString().gf().dp(param));
+  console.log(this.toString().gf().dp(param));
   return this.toString().gf().dp(param);
 };
 String.prototype.jp = function () {
