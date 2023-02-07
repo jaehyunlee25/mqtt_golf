@@ -118,7 +118,7 @@ function proAppResult(json) {
   } catch (e) {
     const [a, result] = msg.split(":");
     const [device, , type] = a.split(" ");
-    if (result == "normal") return;
+    console.log("normal pass", device, type, result);
     sendslackmessage([device, type, result.trim()].join("/"));
   }
 }
@@ -130,7 +130,10 @@ function sendSlackMessage(json, jsonMsg) {
   const { app_result } = jsonMsg;
   const { deviceId, clubId } = json;
   const { device, type, result } = app_result;
-  if (result == "normal") return;
+  if (result == "normal") {
+    console.log("normal pass", deviceId, clubId, device, type, result);
+    return;
+  }
   const str = [
     "< 데이터 조회 결과입니다. >",
     "디바이스: \t" + deviceId,
@@ -145,7 +148,10 @@ function sendEmail(json, jsonMsg) {
   const { app_result } = jsonMsg;
   const { deviceId, clubId } = json;
   const { device, type, result } = app_result;
-  if (result == "normal") return;
+  if (result == "normal") {
+    console.log("normal pass", deviceId, clubId, device, type, result);
+    return;
+  }
   const html = [
     "<h3> 데이터 조회 결과입니다. </h3>",
     "<table>",
