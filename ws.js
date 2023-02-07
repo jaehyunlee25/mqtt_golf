@@ -8,6 +8,9 @@ const request = require("request");
 const fs = require("fs");
 const mysql = require("mysql");
 
+String.prototype.add = function add(str) {
+  return [this, str].join("");
+};
 String.prototype.dp = function (param) {
   let self = this;
   const keys = Object.keys(param);
