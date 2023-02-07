@@ -169,8 +169,8 @@ function sendMessage(json, jsonMsg) {
 
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
     const clubname = [club.name, "(", clubId, ")"].join("");
-    sendSlackMessage(club.name + deviceId, clubname, device, type, result);
-    sendEmail(club.name + deviceId, clubname, device, type, result);
+    sendSlackMessage(deviceId, clubname, device, type, result);
+    sendEmail(deviceId, clubname, device, type, result);
   });
 }
 function sendSlackMessage(deviceId, clubId, device, type, result) {
