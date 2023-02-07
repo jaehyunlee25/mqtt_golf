@@ -117,6 +117,9 @@ function proAppResult(json) {
   } catch (e) {
     const [a, result] = msg.split(":");
     const [device, , type] = a.split(" ");
+    log("result:", result, "device:", device, "type:", type);
+    return;
+
     if (result == "normal") return;
     sendslackmessage([device, type, result.trim()].join("/"));
   }
