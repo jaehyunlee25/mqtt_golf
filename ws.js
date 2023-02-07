@@ -1,12 +1,41 @@
 const mqtt = require("mqtt");
 const nodemailer = require("nodemailer");
-// const smtpTransport = require("nodemailer-smtp-transport");
 const { WebSocketServer } = require("ws");
 const wss = new WebSocketServer({ port: 9001 });
 const sub = mqtt.connect("mqtt://dev.mnemosyne.co.kr");
 const topics = {};
 const request = require("request");
 const fs = require("fs");
+const mysql = require("mysql");
+
+String.prototype.jp = function () {
+  return JSON.parse(this);
+};
+String.prototype.gf = function () {
+  const path = this.toString();
+  return fs.readFileSync(path, "utf-8");
+};
+String.prototype.gfjp = function () {
+  return this.toString().gf().jp();
+};
+String.prototype.query = function (callback) {
+  try {
+    const sql = this.toString();
+    const dbconf = "db.json";
+    const connection = mysql.createConnection(dbconf.gfjp());
+    connection.connect();
+    connection.query(sql, callback);
+    connection.end();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const qstr =
+  "select * from golf_club where id = '1f32a4a4-f111-11ec-a93e-0242ac11000a';";
+qstr.query((err, rows, fields) => {
+  console.log(rows);
+});
 
 const slacktoken = fs.readFileSync("slacktoken").toString("utf-8").trim();
 
@@ -123,13 +152,13 @@ function proAppResult(json) {
   }
 }
 function sendMessage(json, jsonMsg) {
-  sendSlackMessage(json, jsonMsg);
-  sendEmail(json, jsonMsg);
-}
-function sendSlackMessage(json, jsonMsg) {
   const { app_result } = jsonMsg;
   const { deviceId, clubId } = json;
   const { device, type, result } = app_result;
+  sendSlackMessage(deviceId, clubId, device, type, result);
+  sendEmail(deviceId, clubId, device, type, result);
+}
+function sendSlackMessage(deviceId, clubId, device, type, result) {
   if (result == "normal") {
     console.log("normal pass", deviceId, clubId, device, type, result);
     return;
@@ -144,10 +173,7 @@ function sendSlackMessage(json, jsonMsg) {
   ].join("\n");
   sendslackmessage(str);
 }
-function sendEmail(json, jsonMsg) {
-  const { app_result } = jsonMsg;
-  const { deviceId, clubId } = json;
-  const { device, type, result } = app_result;
+function sendEmail(deviceId, clubId, device, type, result) {
   if (result == "normal") {
     console.log("normal pass", deviceId, clubId, device, type, result);
     return;
