@@ -8,6 +8,20 @@ const request = require("request");
 const fs = require("fs");
 const mysql = require("mysql");
 
+String.prototype.dp = function (param) {
+  let self = this;
+  const keys = Object.keys(param);
+  keys.forEach((key) => {
+    const regex = new RegExp("\\$\\{".add(key).add("\\}"), "g");
+    const val = param[key];
+    self = self.replace(regex, val);
+  });
+  return self;
+};
+String.prototype.gfdp = function (param) {
+  log(this.toString().gf().dp(param));
+  return this.toString().gf().dp(param);
+};
 String.prototype.jp = function () {
   return JSON.parse(this);
 };
@@ -31,9 +45,10 @@ String.prototype.query = function (callback) {
   }
 };
 
-const qstr =
-  "select * from golf_club where id = '1f32a4a4-f111-11ec-a93e-0242ac11000a';";
-qstr.query((err, rows, fields) => {
+const param = {
+  golf_club_id: "1f32a4a4-f111-11ec-a93e-0242ac11000a",
+};
+"sql/getclub.sql".gfdp(param).query((err, rows, fields) => {
   console.log(rows);
 });
 
