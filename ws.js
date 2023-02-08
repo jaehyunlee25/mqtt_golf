@@ -156,14 +156,14 @@ function procScriptError(msg) {
   console.log(msg);
   const json = JSON.parse(msg);
   const { deviceId, golfClubId: clubId, message, parameter } = json;
-  console.log(JSON.parse(message));
+  const [type, stack] = message;
   const { LOGID } = JSON.parse(parameter);
   console.log(LOGID);
 
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
     const clubname = [club.name, "(", clubId, ")"].join("");
-    sendSlackMessage(deviceId, clubname, "script", "LOGID: " + LOGID, message);
-    sendEmail(deviceId, clubname, "script", "LOGID: " + LOGID, message);
+    sendSlackMessage(deviceId, clubname, "script", "LOGID: " + LOGID, stack);
+    sendEmail(deviceId, clubname, "script", "LOGID: " + LOGID, stack);
   });
 }
 function procAppResult(json) {
