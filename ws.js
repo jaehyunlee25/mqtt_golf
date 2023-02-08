@@ -153,9 +153,11 @@ function procMsg(topic, message) {
   }
 }
 function procScriptError(message) {
-  console.log(message);
+  const json = JSON.parse(message);
+  const { deviceId, golfClubId, message, parameter } = json;
+  const { LOGID } = parameter;
 }
-function proAppResult(json) {
+function procAppResult(json) {
   try {
     const jsonMsg = JSON.parse(json.message);
     sendMessage(json, jsonMsg);
