@@ -158,6 +158,7 @@ function procScriptError(msg) {
   const { deviceId, golfClubId: clubId, message, parameter } = json;
   console.log(parameter);
   const { LOGID } = parameter;
+  console.log(LOGID);
 
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
     const clubname = [club.name, "(", clubId, ")"].join("");
