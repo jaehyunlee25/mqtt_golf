@@ -162,8 +162,8 @@ function procScriptError(msg) {
 
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
     const clubname = [club.name, "(", clubId, ")"].join("");
-    sendSlackMessage(deviceId, clubname, "script", LOGID, message);
-    sendEmail(deviceId, clubname, "script", LOGID, message);
+    sendSlackMessage(deviceId, clubname, "script", "LOGID: " + LOGID, message);
+    sendEmail(deviceId, clubname, "script", "LOGID: " + LOGID, message);
   });
 }
 function procAppResult(json) {
