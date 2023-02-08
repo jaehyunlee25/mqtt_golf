@@ -154,8 +154,14 @@ function procMsg(topic, message) {
 }
 function procScriptError(msg) {
   const json = JSON.parse(msg);
-  const { deviceId, golfClubId, message, parameter } = json;
+  const { deviceId, golfClubId: clubId, message, parameter } = json;
   const { LOGID } = parameter;
+
+  "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
+    const clubname = [club.name, "(", clubId, ")"].join("");
+    sendSlackMessage(deviceId, clubname, "script", LOGID, message);
+    sendEmail(deviceId, clubname, "script", LOGID, message);
+  });
 }
 function procAppResult(json) {
   try {
