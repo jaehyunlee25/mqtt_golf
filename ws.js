@@ -144,6 +144,7 @@ function procMsg(topic, message) {
   let json;
   try {
     json = JSON.parse(message);
+    if (json.message.indexOf("script_error") != -1) console.log(message);
     if (json.message.indexOf("app_result") != -1) proAppResult(json);
   } catch (e) {
     console.log(message);
