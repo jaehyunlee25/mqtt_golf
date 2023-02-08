@@ -152,8 +152,8 @@ function procMsg(topic, message) {
     return;
   }
 }
-function procScriptError(message) {
-  const json = JSON.parse(message);
+function procScriptError(msg) {
+  const json = JSON.parse(msg);
   const { deviceId, golfClubId, message, parameter } = json;
   const { LOGID } = parameter;
 }
