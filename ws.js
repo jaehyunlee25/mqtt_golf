@@ -153,6 +153,7 @@ function procMsg(topic, message) {
   }
 }
 function procScriptError(msg) {
+  console.log(msg);
   const json = JSON.parse(msg);
   const { deviceId, golfClubId: clubId, message, parameter } = json;
   const { LOGID } = parameter;
