@@ -139,7 +139,7 @@ function mqttonmessage(topic, message) {
   setLog(strTopic, strMessage);
 }
 function procMsg(topic, message) {
-  if (message.indexOf("script_error") != -1) procScriptError(json);
+  if (message.indexOf("script_error") != -1) procScriptError(message);
   if (topic != "TZ_MACRO_LOG") return;
   console.log(topic);
   let json;
@@ -152,8 +152,8 @@ function procMsg(topic, message) {
     return;
   }
 }
-function procScriptError(json) {
-  console.log(json);
+function procScriptError(message) {
+  console.log(message);
 }
 function proAppResult(json) {
   try {
