@@ -139,18 +139,21 @@ function mqttonmessage(topic, message) {
   setLog(strTopic, strMessage);
 }
 function procMsg(topic, message) {
-  if (message.indexOf("script_error") != -1) console.log(message);
   if (topic != "TZ_MACRO_LOG") return;
   console.log(topic);
   let json;
   try {
     json = JSON.parse(message);
-    if (json.message.indexOf("app_result") != -1) proAppResult(json);
+    if (message.indexOf("script_error") != -1) procScriptError(json);
+    if (json.message.indexOf("app_result") != -1) procAppResult(json);
   } catch (e) {
     console.log(message);
     console.log(e);
     return;
   }
+}
+function procScriptError(json) {
+  console.log(json);
 }
 function proAppResult(json) {
   try {
