@@ -157,7 +157,8 @@ function procScriptError(msg) {
   console.log(msg);
   const json = JSON.parse(msg);
   const clubId = json.clubId || json.golfClubId || json.golf_club_id;
-  const { deviceId, message, parameter } = json;
+  const deviceId = json.deviceId || json.device_id;
+  const { message, parameter } = json;
   const [type, address, stack] = message;
   const { LOGID } = JSON.parse(parameter);
   console.log(LOGID);
