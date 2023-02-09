@@ -158,15 +158,29 @@ function procScriptError(msg) {
   const json = JSON.parse(msg);
   const clubId = json.clubId || json.golfClubId || json.golf_club_id;
   const deviceId = json.deviceId || json.device_id;
-  const { message, parameter } = json;
+  const { message, parameter, responseText } = json;
   const [type, address, stack] = message;
   const { LOGID } = JSON.parse(parameter);
   console.log(LOGID);
 
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
     const clubname = [club.name, "(", clubId, ")"].join("");
-    sendSlackMessage(deviceId, clubname, "LOGID: " + LOGID, address, stack);
-    sendEmail(deviceId, clubname, "LOGID: " + LOGID, address, stack);
+    sendSlackMessage(
+      deviceId,
+      clubname,
+      "LOGID: " + LOGID,
+      address,
+      stack,
+      responseText
+    );
+    sendEmail(
+      deviceId,
+      clubname,
+      "LOGID: " + LOGID,
+      address,
+      stack,
+      responseText
+    );
   });
 }
 function procAppResult(json) {
@@ -191,27 +205,29 @@ function sendMessage(json, jsonMsg) {
     sendEmail(deviceId, clubname, device, type, result);
   });
 }
-function sendSlackMessage(deviceId, clubId, device, type, result) {
+function sendSlackMessage(deviceId, clubId, device, type, result, others) {
   if (result == "normal") {
     console.log("normal pass", deviceId, clubId, device, type, result);
     return;
   }
-  const str = [
+  const arr = [
     "< 데이터 조회 결과입니다. >",
     "디바이스: \t" + deviceId,
     "클럽번호: \t" + clubId,
     "기기종류: \t" + device,
     "검색종류: \t" + type,
     "검색결과: \t" + result,
-  ].join("\n");
+  ];
+  if (others) arr.push(["기타사항: \t" + others]);
+  const str = arr.join("\n");
   sendslackmessage(str);
 }
-function sendEmail(deviceId, clubId, device, type, result) {
+function sendEmail(deviceId, clubId, device, type, result, others) {
   if (result == "normal") {
     console.log("normal pass", deviceId, clubId, device, type, result);
     return;
   }
-  const html = [
+  const arr = [
     "<h3> 데이터 조회 결과입니다. </h3>",
     "<table>",
     "<tr><td><b>디바이스: </b></td><td>" + deviceId + "</td></tr>",
@@ -219,8 +235,11 @@ function sendEmail(deviceId, clubId, device, type, result) {
     "<tr><td><b>기기종류: </b></td><td>" + device + "</td></tr>",
     "<tr><td><b>검색종류: </b></td><td>" + type + "</td></tr>",
     "<tr><td><b>검색결과: </b></td><td>" + result + "</td></tr>",
-    "</table>",
-  ].join("<br>");
+  ];
+  if (others)
+    arr.push(["<tr><td><b>검색결과: </b></td><td>" + result + "</td></tr>"]);
+  arr.push(["</table>"]);
+  const html = arr.join("<br>");
 
   const mails = fs.readFileSync("email").toString("utf-8").split("\n");
   exec();
