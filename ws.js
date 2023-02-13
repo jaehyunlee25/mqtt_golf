@@ -142,6 +142,8 @@ function procMsg(topic, message) {
   if (message.indexOf("script_error_in_ajax_callback") != -1)
     procScriptError(message);
   if (message.indexOf("script_error_in_system") != -1) procScriptError(message);
+  if (topic == "TZ_APPLE_LOG") console.log(message);
+
   if (topic != "TZ_MACRO_LOG") return;
   console.log(topic);
   let json;
