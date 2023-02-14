@@ -221,10 +221,6 @@ function sendMessage(json, jsonMsg) {
   });
 }
 function setLogReport(macroId, deviceId, clubId, device, type, result, others) {
-  if (result == "normal") {
-    console.log("normal pass", deviceId, clubId, device, type, result);
-    return;
-  }
   const param = { macroId, deviceId, clubId, device, type, result, others };
   "sql/setLogReport.sql".gfdp(param).query((err, result, fields) => {
     if (err) {
