@@ -220,7 +220,7 @@ function sendMessage(json, jsonMsg) {
     sendEmail(deviceId, clubname, device, type, result);
   });
 }
-function setLogReport(deviceId, clubId, device, type, result, others) {
+function setLogReport(macroId, deviceId, clubId, device, type, result, others) {
   const param = { deviceId, clubId, device, type, result, others };
   "sql/setLogReport.sql".gfdp(param).query((err, [club], fields) => {
     if (err) {
