@@ -161,11 +161,21 @@ function procScriptError(msg) {
   const json = JSON.parse(msg);
   const clubId = json.clubId || json.golfClubId || json.golf_club_id;
   const deviceId = json.deviceId || json.device_id;
+  const macroId = json.macro_id || "";
   const { message, parameter, responseText } = json;
   const [type, address, stack] = message;
   const { LOGID } = JSON.parse(parameter);
   console.log(LOGID);
 
+  setLogReport(
+    macroId,
+    deviceId,
+    clubId,
+    "LOGID: " + LOGID,
+    address,
+    stack,
+    responseText
+  );
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
     const clubname = [club.name, "(", clubId, ")"].join("");
     sendSlackMessage(
@@ -197,15 +207,26 @@ function procAppResult(json) {
     sendslackmessage([device, type, result.trim()].join("/"));
   }
 }
+
 function sendMessage(json, jsonMsg) {
   const { app_result } = jsonMsg;
-  const { deviceId, clubId } = json;
+  const { deviceId, clubId, macro_id: macroId } = json;
   const { device, type, result } = app_result;
 
+  setLogReport(macroId, deviceId, clubId, device, type, result, "");
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
     const clubname = [club.name, "(", clubId, ")"].join("");
     sendSlackMessage(deviceId, clubname, device, type, result);
     sendEmail(deviceId, clubname, device, type, result);
+  });
+}
+function setLogReport(deviceId, clubId, device, type, result, others) {
+  const param = { deviceId, clubId, device, type, result, others };
+  "sql/setLogReport.sql".gfdp(param).query((err, [club], fields) => {
+    if (err) {
+      console.log(err);
+      console.log("sql/setLogReport.sql".gfdp(param));
+    }
   });
 }
 function sendSlackMessage(deviceId, clubId, device, type, result, others) {
