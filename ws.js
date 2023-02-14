@@ -222,7 +222,7 @@ function sendMessage(json, jsonMsg) {
 }
 function setLogReport(macroId, deviceId, clubId, device, type, result, others) {
   const param = { macroId, deviceId, clubId, device, type, result, others };
-  "sql/setLogReport.sql".gfdp(param).query((err, [club], fields) => {
+  "sql/setLogReport.sql".gfdp(param).query((err, result, fields) => {
     /* if (err) {
       console.log(err);
       console.log("sql/setLogReport.sql".gfdp(param));
