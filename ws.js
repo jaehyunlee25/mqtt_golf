@@ -222,12 +222,12 @@ function sendMessage(json, jsonMsg) {
 }
 function setLogReport(macroId, deviceId, clubId, device, type, result, others) {
   const param = { macroId, deviceId, clubId, device, type, result, others };
-  /* "sql/setLogReport.sql".gfdp(param).query((err, [club], fields) => {
-    if (err) {
+  "sql/setLogReport.sql".gfdp(param).query((err, [club], fields) => {
+    /* if (err) {
       console.log(err);
       console.log("sql/setLogReport.sql".gfdp(param));
-    }
-  }); */
+    } */
+  });
 }
 function sendSlackMessage(deviceId, clubId, device, type, result, others) {
   if (result == "normal") {
