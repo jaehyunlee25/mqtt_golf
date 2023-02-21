@@ -215,6 +215,8 @@ function sendMessage(json, jsonMsg) {
 
   setLogReport(macroId, deviceId, clubId, device, type, result, "");
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
+    if (err) return;
+    if (!club) return;
     const clubname = [club.name, "(", clubId, ")"].join("");
     sendSlackMessage(deviceId, clubname, device, type, result);
     sendEmail(deviceId, clubname, device, type, result);
