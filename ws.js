@@ -177,6 +177,8 @@ function procScriptError(msg) {
     responseText
   );
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
+    if (err) return;
+    if (!club) return;
     const clubname = [club.name, "(", clubId, ")"].join("");
     sendSlackMessage(
       deviceId,
