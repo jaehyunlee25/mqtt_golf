@@ -266,7 +266,7 @@ function sendEmail(deviceId, clubId, device, type, result, others) {
     "<tr><td><b>검색결과: </b></td><td>" + result + "</td></tr>",
   ];
   if (others)
-    arr.push(["<tr><td><b>검색결과: </b></td><td>" + result + "</td></tr>"]);
+    arr.push(["<tr><td><b>수신데이터: </b></td><td>" + others + "</td></tr>"]);
   arr.push(["</table>"]);
   const html = arr.join("<br>");
 
