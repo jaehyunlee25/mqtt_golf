@@ -157,13 +157,13 @@ function procMsg(topic, message) {
   }
 }
 function procScriptError(msg) {
-  console.log(msg);
   const json = JSON.parse(msg);
   const clubId = json.clubId || json.golfClubId || json.golf_club_id;
   const deviceId = json.deviceId || json.device_id;
   const macroId = json.macro_id || "";
-  const { message, parameter, responseText } = json;
-  const [address, stack] = JSON.parse(message);
+  const { message, parameter } = json;
+  log(message);
+  const [address, stack] = message;
   const { LOGID } = JSON.parse(parameter);
   console.log(LOGID);
 
