@@ -173,8 +173,8 @@ function procScriptError(msg) {
     deviceId,
     clubId,
     "LOGID: " + LOGID,
-    address,
-    stack,
+    "",
+    "error",
     responseText
   );
   "sql/getclub.sql".gfdp({ clubId }).query((err, [club], fields) => {
