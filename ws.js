@@ -163,7 +163,7 @@ function procScriptError(msg) {
   const deviceId = json.deviceId || json.device_id;
   const macroId = json.macro_id || "";
   const { message, parameter, responseText } = json;
-  const [type, address, stack] = message;
+  const [address, stack] = JSON.parse(message);
   const { LOGID } = JSON.parse(parameter);
   console.log(LOGID);
 
