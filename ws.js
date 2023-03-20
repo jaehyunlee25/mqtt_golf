@@ -161,7 +161,7 @@ function procScriptError(msg) {
   const clubId = json.clubId || json.golfClubId || json.golf_club_id;
   const deviceId = json.deviceId || json.device_id;
   const macroId = json.macro_id || "";
-  const { message, parameter } = json;
+  const { message, parameter, responseText } = json;
   console.log(message);
   const [address, stack] = message;
   const { LOGID } = JSON.parse(parameter);
