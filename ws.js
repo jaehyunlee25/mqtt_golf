@@ -162,7 +162,7 @@ function procScriptError(msg) {
   const deviceId = json.deviceId || json.device_id;
   const macroId = json.macro_id || "";
   const { message, parameter } = json;
-  log(message);
+  console.log(message);
   const [address, stack] = message;
   const { LOGID } = JSON.parse(parameter);
   console.log(LOGID);
