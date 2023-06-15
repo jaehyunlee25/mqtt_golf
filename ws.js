@@ -135,7 +135,7 @@ function mqttonmessage(topic, message) {
         })
       );
   });
-  log(topic, message);
+  console.log(topic, message);
   /* procMsg(strTopic, strMessage);
   setLog(strTopic, strMessage); */
 }
