@@ -7,7 +7,6 @@ const topics = {};
 const request = require("request");
 const fs = require("fs");
 const mysql = require("mysql");
-const mqtt = require("mqtt");
 
 String.prototype.add = function add(str) {
   return [this, str].join("");
