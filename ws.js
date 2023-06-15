@@ -7,6 +7,7 @@ const topics = {};
 const request = require("request");
 const fs = require("fs");
 const mysql = require("mysql");
+const mqtt = require("mqtt");
 
 String.prototype.add = function add(str) {
   return [this, str].join("");
@@ -135,8 +136,9 @@ function mqttonmessage(topic, message) {
         })
       );
   });
-  procMsg(strTopic, strMessage);
-  setLog(strTopic, strMessage);
+  log(topic, message);
+  /* procMsg(strTopic, strMessage);
+  setLog(strTopic, strMessage); */
 }
 function procMsg(topic, message) {
   if (message.indexOf("script_error_in_ajax_callback") != -1)
